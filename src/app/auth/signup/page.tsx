@@ -6,34 +6,25 @@ import Link from "next/link"
 
 const PLANS = {
   early:    { label: "Early Bird",   price: "$49/month", stripe: process.env.NEXT_PUBLIC_STRIPE_LINK_EARLY    || "#" },
-  standard: { label: "Standard",     price: "$99/month", stripe: process.env.NEXT_PUBLIC_STRIPE_LINK_STANDARD || "#" },
+  grow:     { label: "Grow",         price: "$99/month", stripe: process.env.NEXT_PUBLIC_STRIPE_LINK_GROW     || "#" },
+  standard: { label: "Standard",     price: "$99/month", stripe: process.env.NEXT_PUBLIC_STRIPE_LINK_GROW     || "#" },
 }
 
 function SignupForm() {
-  const params   = useSearchParams()
-  const planKey  = (params.get("plan") as keyof typeof PLANS) || "early"
-  const plan     = PLANS[planKey] || PLANS.early
+  const params  = useSearchParams()
+  const planKey = (params.get("plan") as keyof typeof PLANS) || "early"
+  const plan    = PLANS[planKey] || PLANS.early
 
-  const [step, setStep]     = useState<"info"|"done">("info")
   const [loading, setLoading] = useState(false)
-  const [form, setForm]     = useState({ name: "", email: "", phone: "", business: "", niche: "hvac", city: "" })
+  const [smsConsent, setSmsConsent] = useState(false)
+  const [form, setForm] = useState({ name: "", email: "", phone: "", business: "", niche: "hvac", city: "" })
 
-  const niches = ["hvac","roofing","plumbing","dentist","medspa","lawfirm","cleaning","auto-detailing","restaurant"]
+  const niches = ["hvac","roofing","plumbing","dentist","medspa","lawfirm","cleaning","auto-detailing","junk-removal","daycare","remodeling","restaurant"]
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-
-    // Save lead to DB + redirect to Stripe
-    try {
-      await fetch("/api/admin/signup-lead", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, plan: planKey }),
-      })
-    } catch {}
-
-    // Redirect to Stripe checkout
+    // Redirect to Stripe — no API route on static export, Stripe handles checkout
     window.location.href = `${plan.stripe}?prefilled_email=${encodeURIComponent(form.email)}`
   }
 
@@ -49,7 +40,7 @@ function SignupForm() {
         {/* Logo */}
         <Link href="/" style={{ display: "flex", alignItems: "center", gap: "8px", textDecoration: "none", marginBottom: "40px", justifyContent: "center" }}>
           <div style={{ width: "32px", height: "32px", background: "linear-gradient(135deg,#f97316,#ea580c)", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <span style={{ color: "#fff", fontSize: "16px", fontWeight: 900 }}>B</span>
+            <span style={{ color: "#fff", fontSize: "16px", fontWeight: 900 }}>W</span>
           </div>
           <span style={{ color: "#fff", fontWeight: 800, fontSize: "18px" }}>WebCrew</span>
         </Link>
@@ -64,7 +55,7 @@ function SignupForm() {
               Get your free website
             </h1>
             <p style={{ color: "rgba(255,255,255,0.45)", fontSize: "14px" }}>
-              We'll build and show you the site. Pay only when you love it.
+              We&apos;ll build and show you the site. Pay only when you love it.
             </p>
           </div>
 
@@ -74,16 +65,34 @@ function SignupForm() {
               <input style={inp} placeholder="Business name" value={form.business} onChange={e => setForm(f => ({...f, business: e.target.value}))} required />
             </div>
             <input style={inp} type="email" placeholder="Email address" value={form.email} onChange={e => setForm(f => ({...f, email: e.target.value}))} required />
-            <input style={inp} type="tel" placeholder="Phone number (for SMS updates)" value={form.phone} onChange={e => setForm(f => ({...f, phone: e.target.value}))} />
+            <input style={inp} type="tel" placeholder="Phone number (optional)" value={form.phone} onChange={e => setForm(f => ({...f, phone: e.target.value}))} />
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
               <select style={{...inp}} value={form.niche} onChange={e => setForm(f => ({...f, niche: e.target.value}))}>
-                {niches.map(n => <option key={n} value={n} style={{ background: "#1e293b" }}>{n.replace("-"," ")}</option>)}
+                {niches.map(n => <option key={n} value={n} style={{ background: "#1e293b" }}>{n.replace(/-/g," ")}</option>)}
               </select>
               <input style={inp} placeholder="City, State" value={form.city} onChange={e => setForm(f => ({...f, city: e.target.value}))} required />
             </div>
 
+            {/* SMS Consent — required by TCPA / Twilio ToS */}
+            {form.phone && (
+              <label style={{ display: "flex", gap: "10px", alignItems: "flex-start", cursor: "pointer" }}>
+                <input
+                  type="checkbox"
+                  checked={smsConsent}
+                  onChange={e => setSmsConsent(e.target.checked)}
+                  style={{ marginTop: "2px", accentColor: "#f97316", width: "16px", height: "16px", flexShrink: 0 }}
+                />
+                <span style={{ color: "rgba(255,255,255,0.45)", fontSize: "12px", lineHeight: 1.5 }}>
+                  I agree to receive SMS updates about my WebCrew website and account. Message &amp; data rates may apply.
+                  Reply STOP to cancel. See our{" "}
+                  <Link href="/legal/privacy" style={{ color: "#f97316", textDecoration: "none" }}>Privacy Policy</Link>.
+                </span>
+              </label>
+            )}
+
             <button type="submit" disabled={loading} style={{
-              marginTop: "8px", background: loading ? "rgba(249,115,22,0.4)" : "linear-gradient(135deg,#f97316,#ea580c)",
+              marginTop: "8px",
+              background: loading ? "rgba(249,115,22,0.4)" : "linear-gradient(135deg,#f97316,#ea580c)",
               color: "#fff", border: "none", padding: "16px", borderRadius: "12px",
               fontSize: "16px", fontWeight: 700, cursor: loading ? "not-allowed" : "pointer",
               boxShadow: "0 8px 32px -8px rgba(249,115,22,0.4)", letterSpacing: "-0.2px",
@@ -92,7 +101,14 @@ function SignupForm() {
             </button>
           </form>
 
-          <p style={{ marginTop: "20px", textAlign: "center", color: "rgba(255,255,255,0.3)", fontSize: "12px" }}>
+          <p style={{ marginTop: "16px", color: "rgba(255,255,255,0.25)", fontSize: "11px", lineHeight: 1.5, textAlign: "center" }}>
+            By continuing you agree to our{" "}
+            <Link href="/legal/terms"   style={{ color: "rgba(255,255,255,0.4)", textDecoration: "none" }}>Terms of Service</Link>
+            {" "}and{" "}
+            <Link href="/legal/privacy" style={{ color: "rgba(255,255,255,0.4)", textDecoration: "none" }}>Privacy Policy</Link>.
+          </p>
+
+          <p style={{ marginTop: "12px", textAlign: "center", color: "rgba(255,255,255,0.3)", fontSize: "12px" }}>
             Already have an account? <Link href="/auth/signin" style={{ color: "#f97316", textDecoration: "none" }}>Sign in</Link>
           </p>
         </div>

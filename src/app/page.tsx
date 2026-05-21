@@ -61,10 +61,19 @@ const TICKER_ITEMS = [
 
 // ─── UTILS ───────────────────────────────────────────────────────────────────
 
-function splitWords(text: string) {
+function splitWords(text: string, gradient?: boolean) {
+  const gradStyle: React.CSSProperties = gradient ? {
+    background: "linear-gradient(135deg,#fb923c,#f97316,#fb923c)",
+    backgroundSize: "200% auto",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    backgroundClip: "text",
+    animation: "gradient-shimmer 4s linear infinite",
+    display: "inline-block",
+  } : {}
   return text.split(" ").map((w, i) => (
     <span key={i} className="word-wrap" style={{ marginRight: "0.22em" }}>
-      <span className="word-inner">{w}</span>
+      <span className="word-inner" style={gradStyle}>{w}</span>
     </span>
   ))
 }
@@ -243,9 +252,7 @@ function Hero() {
         <h1 ref={h1Ref} style={{ fontSize: "clamp(2.6rem,8.5vw,7.5rem)", fontWeight: 900, letterSpacing: "-0.04em", lineHeight: 0.95, marginBottom: "32px" }}>
           {splitWords("AI-Powered Websites")}
           <br />
-          <span style={{ background: "linear-gradient(135deg,#fb923c,#f97316,#fb923c)", backgroundSize: "200% auto", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", animation: "gradient-shimmer 4s linear infinite" }}>
-            {splitWords("for Local Businesses.")}
-          </span>
+          {splitWords("for Local Businesses.", true)}
         </h1>
 
         <p ref={paraRef} style={{ fontSize: "clamp(1.05rem,1.6vw,1.35rem)", color: "rgba(255,255,255,0.65)", lineHeight: 1.6, maxWidth: "640px", margin: "0 auto 48px", fontWeight: 400 }}>
@@ -735,10 +742,11 @@ function Footer() {
           <span style={{ fontWeight: 800, fontSize: "16px" }}>WebCrew</span>
           <span style={{ color: "rgba(255,255,255,0.3)", fontSize: "13px", marginLeft: "8px" }}>© 2026</span>
         </div>
-        <div style={{ display: "flex", gap: "24px" }}>
-          <Link href="/admin"      style={{ color: "rgba(255,255,255,0.3)", textDecoration: "none", fontSize: "13px" }}>Admin</Link>
+        <div style={{ display: "flex", gap: "24px", flexWrap: "wrap" }}>
+          <Link href="/legal/privacy" style={{ color: "rgba(255,255,255,0.4)", textDecoration: "none", fontSize: "13px" }}>Privacy Policy</Link>
+          <Link href="/legal/terms"   style={{ color: "rgba(255,255,255,0.4)", textDecoration: "none", fontSize: "13px" }}>Terms of Service</Link>
           <a href="mailto:hello@webcrew.app" style={{ color: "rgba(255,255,255,0.4)", textDecoration: "none", fontSize: "13px" }}>hello@webcrew.app</a>
-          <Link href="/auth/signin" style={{ color: "rgba(255,255,255,0.4)", textDecoration: "none", fontSize: "13px" }}>Client login</Link>
+          <Link href="/auth/signin" style={{ color: "rgba(255,255,255,0.3)", textDecoration: "none", fontSize: "13px" }}>Client login</Link>
         </div>
       </div>
     </footer>
