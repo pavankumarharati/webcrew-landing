@@ -14,18 +14,20 @@ if (typeof window !== "undefined") { gsap.registerPlugin(ScrollTrigger) }
 const NICHES = ["HVAC", "Roofing", "Plumbing", "Dental", "Med Spa", "Cleaning", "Law Firm", "Auto Detailing"]
 
 const DEMOS = [
-  { name: "HVAC Heating & Cooling",   niche: "HVAC",        city: "Tracy, CA",      url: "https://site-hvac-heating-cooling-llc.pages.dev",              img: "/showcase/hvac-real.jpg",              rating: "4.9", reviews: "200+" },
-  { name: "Clearwater Dentistry",     niche: "Dentistry",   city: "Clearwater, FL", url: "https://site-clearwater-dentistry.pages.dev",                  img: "/showcase/dentist-real.jpg",           rating: "4.9", reviews: "180+" },
-  { name: "Happy Junk Removal",       niche: "Junk Removal",city: "San Jose, CA",   url: "https://site-happy-junk-removal.pages.dev",                    img: "/showcase/junk-removal-real.jpg",      rating: "4.8", reviews: "95+"  },
-  { name: "San Jose Daycare",         niche: "Daycare",     city: "San Jose, CA",   url: "https://site-san-jose-daycare.pages.dev",                      img: "/showcase/daycare-real.jpg",           rating: "5.0", reviews: "60+"  },
-  { name: "Luxury Homes Riverside",   niche: "Real Estate", city: "Riverside, CA",  url: "https://site-luxury-homes-in-riverside.pages.dev",             img: "/showcase/luxury-realestate-real.jpg", rating: "4.8", reviews: "120+" },
-  { name: "Dell's Heating & Air",     niche: "HVAC",        city: "Tracy, CA",      url: "https://site-dell-s-heating-air-conditioning.pages.dev",       img: "/showcase/dells-hvac-real.jpg",        rating: "4.9", reviews: "200+" },
+  { name: "HVAC Heating & Cooling",       niche: "HVAC",            city: "Tracy, CA",       url: "https://site-hvac-heating-cooling-llc.pages.dev",                            img: "/showcase/hvac-real.jpg",              rating: "4.9", reviews: "200+" },
+  { name: "Clearwater Dentistry",         niche: "Dentistry",       city: "Clearwater, FL",  url: "https://site-clearwater-dentistry.pages.dev",                                img: "/showcase/dentist-real.jpg",           rating: "4.9", reviews: "180+" },
+  { name: "Delta Sierra Mechanical",      niche: "HVAC + Plumbing", city: "Stockton, CA",    url: "https://site-delta-sierra-mechanical.pages.dev",                             img: "/showcase/delta-sierra-real.jpg",      rating: "4.9", reviews: "200+" },
+  { name: "Happy Junk Removal",           niche: "Junk Removal",    city: "San Jose, CA",    url: "https://site-happy-junk-removal.pages.dev",                                  img: "/showcase/junk-removal-real.jpg",      rating: "4.8", reviews: "95+"  },
+  { name: "San Jose Daycare",             niche: "Daycare",         city: "San Jose, CA",    url: "https://site-san-jose-daycare.pages.dev",                                    img: "/showcase/daycare-real.jpg",           rating: "5.0", reviews: "60+"  },
+  { name: "Luxury Homes Riverside",       niche: "Real Estate",     city: "Riverside, CA",   url: "https://site-luxury-homes-in-riverside.pages.dev",                           img: "/showcase/luxury-realestate-real.jpg", rating: "4.8", reviews: "120+" },
+  { name: "Jazz Heating & Plumbing",      niche: "HVAC + Plumbing", city: "Pleasanton, CA",  url: "https://site-jazz-heating-air-conditioning-and-plumbi-cif.pages.dev",        img: "/showcase/jazz-plumbing-real.jpg",     rating: "4.9", reviews: "200+" },
+  { name: "Dell's Heating & Air",         niche: "HVAC",            city: "Tracy, CA",       url: "https://site-dell-s-heating-air-conditioning.pages.dev",                     img: "/showcase/dells-hvac-real.jpg",        rating: "4.9", reviews: "200+" },
 ]
 
 const STEPS = [
-  { n: "01", title: "We find your business",   desc: "AI scans Google Maps and builds your site automatically — no forms, no calls, no waiting." },
-  { n: "02", title: "Your site goes live",      desc: "A professional website deploys in minutes. Live preview link hits your inbox instantly." },
-  { n: "03", title: "Customers start calling", desc: "SEO-optimized, mobile-first, click-to-call — built to turn visitors into paying customers." },
+  { n: "01", title: "Your website is already built",  desc: "Before you fill out a single form or take a single call, your professional website is live. Nothing required from you — just your business name." },
+  { n: "02", title: "See it live. Zero obligation.",   desc: "We send you a real, live URL — your business, your services, your area. Review it yourself. Pay only if you love it. No pressure, no commitment." },
+  { n: "03", title: "Customers find you. Phones ring.", desc: "Your new site is SEO-optimized from day one. Your Google ranking improves, your phone rings more, and you focus on the work — not the website." },
 ]
 
 const FEATURES = [
@@ -708,7 +710,7 @@ function FinalCTA() {
         </h2>
         <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "17px", marginBottom: "40px", lineHeight: 1.6 }}>
           Your site is already built. All you have to do is say yes.<br />
-          First month free if you sign up today.
+          30-day money-back guarantee — $0 risk, no questions asked.
         </p>
         {submitted ? (
           <div style={{ background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.2)", borderRadius: "12px", padding: "20px", color: "#86efac", fontWeight: 600 }}>
